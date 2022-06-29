@@ -93,7 +93,10 @@ const RecordScreen: FC = () => {
 
         <VStack alignItems={'flex-end'} space={2}>
           <Text>
-            Displaying {currentDataIndex + 1} / {data.length}
+            Displaying{' '}
+            {data.length === 0
+              ? '(None)'
+              : `${currentDataIndex + 1} / ${data.length}`}
           </Text>
           <Button.Group isAttached>
             <Button

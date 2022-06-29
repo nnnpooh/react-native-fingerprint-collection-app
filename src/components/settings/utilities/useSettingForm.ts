@@ -5,8 +5,14 @@ import {SettingFormDataType} from 'src/components/settings/types/settings';
 import {useAppSelector} from 'src/store/hook';
 
 const schema = yup.object({
-  totalScan: yup.number().integer().positive().max(100).required(),
-  scanInterval: yup.number().integer().positive().max(10000).required(),
+  totalScan: yup.number().integer().positive().max(1000).required(),
+  scanInterval: yup
+    .number()
+    .integer()
+    .positive()
+    .min(10000)
+    .max(1000000)
+    .required(),
 });
 
 function useSettingForm() {

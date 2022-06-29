@@ -9,6 +9,7 @@ export interface WifiState {
   currentScanNumber: number;
   currentDataIndex: number;
   setIntervalID: NodeJS.Timer | null;
+  isPausing: boolean;
 }
 
 const initialState: WifiState = {
@@ -20,6 +21,7 @@ const initialState: WifiState = {
   currentScanNumber: 1,
   currentDataIndex: 0,
   setIntervalID: null,
+  isPausing: false,
 };
 
 export interface WifiSettingTypes {
@@ -69,6 +71,10 @@ export const wifiSlice = createSlice({
     resetSetIntervalID: state => {
       state.setIntervalID = null;
     },
+    setIsPausing: (state, action: PayloadAction<boolean>) => {
+      state.isPausing = action.payload;
+      console.log('Set pasing to', state.isPausing ? 'True' : 'false');
+    },
   },
 });
 
@@ -85,6 +91,7 @@ export const {
   resetCurrentDataIndex,
   setSetIntervalID,
   resetSetIntervalID,
+  setIsPausing,
 } = wifiSlice.actions;
 
 export default wifiSlice.reducer;

@@ -50,7 +50,7 @@ function useRecord() {
       timestamp: now.getTime(),
     };
 
-    console.log({dataAdded});
+    // console.log({dataAdded});
     try {
       await db.doc(dbPath).set(dataAdded);
       return dataAdded;

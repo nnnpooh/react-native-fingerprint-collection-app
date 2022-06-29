@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import WifiManager from 'react-native-wifi-reborn';
-import {resetCurrentDataIndex} from 'src/store/wifiSlice';
 import {useAppDispatch} from 'src/store/hook';
 import {useAppSelector} from 'src/store/hook';
 import {
@@ -11,13 +10,20 @@ import {
   resetCurrentScanNumber,
   setSetIntervalID,
   resetSetIntervalID,
+  resetCurrentDataIndex,
+  setIsPausing,
 } from 'src/store/wifiSlice';
 
 export default function useWifi() {
-  const {scanInterval, totalScan, currentScanNumber, setIntervalID} =
-    useAppSelector(state => state.wifi);
+  const {
+    scanInterval,
+    totalScan,
+    currentScanNumber,
+    setIntervalID,
+    isScanning,
+    isPausing,
+  } = useAppSelector(state => state.wifi);
   const dispatch = useAppDispatch();
-  // const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function handleReadWifi() {
     dispatch(resetData());
@@ -40,11 +46,36 @@ export default function useWifi() {
     }
   }, [currentScanNumber]);
 
+  // function handleReadWifi() {
+  //   dispatch(resetData());
+  //   dispatch(resetCurrentDataIndex());
+  //   dispatch(setIsScanning(true));
+  //   dispatch(setIsPausing(false));
+  // }
+
+  // useEffect(() => {
+  //   if (!isScanning) return;
+  //   if (isPausing) return;
+  //   if (currentScanNumber <= totalScan) {
+  //     getWifiData(currentScanNumber);
+  //     console.log('Execute scan at', currentScanNumber);
+  //     setTimeout(() => {
+  //       console.log('start countdown');
+  //       dispatch(setIsPausing(false));
+  //     }, scanInterval);
+  //   } else {
+  //     dispatch(setIsScanning(false));
+  //     dispatch(resetCurrentScanNumber());
+  //   }
+  // }, [isPausing, currentScanNumber, isScanning]);
+
   function getWifiData() {
     if (WifiManager) {
-      WifiManager.loadWifiList().then(lists => {
+      WifiManager.reScanAndLoadWifiList().then(lists => {
         const listsSorted = lists.sort((a, b) => (a.level > b.level ? -1 : 1));
         dispatch(appendData(listsSorted));
+        // console.log('Finish scan at', currentScanNumber);
+        // dispatch(setIsPausing(true));
       });
     } else {
       console.log('null wifimanager');
