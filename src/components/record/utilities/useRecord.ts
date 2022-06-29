@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
 import {useMutation} from 'react-query';
 import {useAppSelector, useAppDispatch} from 'src/store/hook';
 import {db} from 'src/utilities/firebase/firebase';
 import {SiteType, PointType} from 'src/components/location/types/location';
-import {setReadFingerprint} from 'src/store/workingSlice';
+import {
+  setReadFingerprint,
+  setShowFingerprintAlert,
+} from 'src/store/workingSlice';
 
 function useRecord() {
-  const [showSucessAlert, setShowSuccessAlert] = useState(false);
   const {
     data: wifiData,
     scanInterval,
     totalScan,
-    currentScanNumber,
   } = useAppSelector(state => state.wifi);
 
   const {readFingerprint: pressRead} = useAppSelector(state => state.working);
@@ -19,10 +19,9 @@ function useRecord() {
 
   const {currentSite, currentPoint} = useAppSelector(state => state.location);
 
-  console.log('hook', showSucessAlert);
   function handlePressRead() {
     dispatch(setReadFingerprint(true));
-    setShowSuccessAlert(true);
+    dispatch(setShowFingerprintAlert(false));
   }
 
   async function writeData() {
@@ -50,7 +49,6 @@ function useRecord() {
       timestamp: now.getTime(),
     };
 
-    // console.log({dataAdded});
     try {
       await db.doc(dbPath).set(dataAdded);
       return dataAdded;
@@ -62,13 +60,12 @@ function useRecord() {
 
   const {mutate} = useMutation(() => writeData(), {
     onSuccess: data => {
-      setShowSuccessAlert(true);
-      console.log('here');
+      dispatch(setShowFingerprintAlert(true));
     },
     onError: () => {},
   });
 
-  return {mutate, pressRead, handlePressRead, showSucessAlert};
+  return {mutate, pressRead, handlePressRead};
 }
 
 export default useRecord;

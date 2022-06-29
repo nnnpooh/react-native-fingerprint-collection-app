@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import useWifi from 'src/components/record/wifi/useWifi';
-import {Button, VStack, Text, HStack, Box, FlatList} from 'native-base';
+import {Button, VStack, Text, HStack, Box, FlatList, Icon} from 'native-base';
 import {useAppSelector, useAppDispatch} from 'src/store/hook';
 import useRecord from 'src/components/record/utilities/useRecord';
 import IconAD from 'react-native-vector-icons/AntDesign';
@@ -19,24 +19,28 @@ const ScanningInfo: FC = () => {
 
   if (!isScanning)
     return (
-      <Text>
-        Scanned {currentScanNumber} / {totalScan}
-      </Text>
+      <HStack alignItems={'center'} space={2}>
+        <IconAD name="checkcircle" size={20} color="#059669" />
+        <Text>
+          Scanned {totalScan} / {totalScan}
+        </Text>
+      </HStack>
     );
 
   const IconPause: FC = () => (
-    <IconAD name="pausecircle" size={20} color="gray" />
+    <IconAD name="pausecircle" size={20} color="#e11d48" />
   );
-
-  const IconPlay: FC = () => <IconAD name="play" size={20} color="green" />;
+  const IconPlay: FC = () => <IconAD name="play" size={20} color="#0369a1" />;
 
   return (
-    <VStack alignItems={'flex-start'} space={2}>
-      {isPausing ? <IconPause /> : <IconPlay />}
+    <HStack alignItems={'center'} space={2}>
+      {!isPausing ? <IconPlay /> : <IconPause />}
       <Text>
-        Scanning {currentScanNumber} / {totalScan} ({scanInterval} ms)
+        {!isPausing
+          ? `Scanning ${currentScanNumber} / ${totalScan}`
+          : `Pausing (${scanInterval} ms)`}
       </Text>
-    </VStack>
+    </HStack>
   );
 };
 

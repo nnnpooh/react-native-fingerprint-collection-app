@@ -6,6 +6,7 @@ export interface WorkingState {
   hasAccessFineLocation: boolean;
   email: string;
   readFingerprint: boolean;
+  showFingerprintAlert: boolean;
 }
 
 const blankDeviceInfo = {
@@ -21,6 +22,7 @@ const initialState: WorkingState = {
   hasAccessFineLocation: false,
   email: '',
   readFingerprint: false,
+  showFingerprintAlert: false,
 };
 
 export const workingSlice = createSlice({
@@ -39,6 +41,9 @@ export const workingSlice = createSlice({
     setReadFingerprint: (state, action: PayloadAction<boolean>) => {
       state.readFingerprint = action.payload;
     },
+    setShowFingerprintAlert: (state, action: PayloadAction<boolean>) => {
+      state.showFingerprintAlert = action.payload;
+    },
   },
 });
 
@@ -47,6 +52,7 @@ export const {
   setHasAccessFineLocation,
   setEmail,
   setReadFingerprint,
+  setShowFingerprintAlert,
 } = workingSlice.actions;
 
 export default workingSlice.reducer;
