@@ -29,58 +29,64 @@ export default function useWifi() {
     dispatch(resetData());
     dispatch(resetCurrentDataIndex());
     dispatch(setIsScanning(true));
-    const setIntervalID = setInterval(() => {
-      getWifiData();
-      dispatch(incrementCurrentScanNumber());
-    }, scanInterval);
-    dispatch(setSetIntervalID(setIntervalID));
+    // const setIntervalID = setInterval(() => {
+    //   getWifiData();
+    //   dispatch(incrementCurrentScanNumber());
+    // }, scanInterval);
+    // dispatch(setSetIntervalID(setIntervalID));
+    scanWifi(1, totalScan);
   }
 
   useEffect(() => {
-    console.log({currentScanNumber, totalScan, setIntervalID});
+    // console.log({currentScanNumber, totalScan, setIntervalID});
     if (currentScanNumber > totalScan && setIntervalID) {
-      clearInterval(setIntervalID);
-      dispatch(resetSetIntervalID());
-      dispatch(resetCurrentScanNumber());
-      dispatch(setIsScanning(false));
+      // clearInterval(setIntervalID);
+      // dispatch(resetSetIntervalID());
+      // dispatch(resetCurrentScanNumber());
+      // dispatch(setIsScanning(false));
     }
   }, [currentScanNumber]);
 
-  // function handleReadWifi() {
-  //   dispatch(resetData());
-  //   dispatch(resetCurrentDataIndex());
-  //   dispatch(setIsScanning(true));
-  //   dispatch(setIsPausing(false));
-  // }
+  function callReScanWrapper(idx: number, totalScan: number) {
+    if (!WifiManager) return;
+    WifiManager.reScanAndLoadWifiList().then(lists => {
+      const listsSorted = lists.sort((a, b) => (a.level > b.level ? -1 : 1));
+      dispatch(appendData(listsSorted));
+      dispatch(incrementCurrentScanNumber());
+      scanWifi(idx + 1, totalScan);
+    });
+  }
 
-  // useEffect(() => {
-  //   if (!isScanning) return;
-  //   if (isPausing) return;
-  //   if (currentScanNumber <= totalScan) {
-  //     getWifiData(currentScanNumber);
-  //     console.log('Execute scan at', currentScanNumber);
-  //     setTimeout(() => {
-  //       console.log('start countdown');
-  //       dispatch(setIsPausing(false));
-  //     }, scanInterval);
-  //   } else {
-  //     dispatch(setIsScanning(false));
-  //     dispatch(resetCurrentScanNumber());
-  //   }
-  // }, [isPausing, currentScanNumber, isScanning]);
-
-  function getWifiData() {
-    if (WifiManager) {
-      WifiManager.reScanAndLoadWifiList().then(lists => {
-        const listsSorted = lists.sort((a, b) => (a.level > b.level ? -1 : 1));
-        dispatch(appendData(listsSorted));
-        // console.log('Finish scan at', currentScanNumber);
-        // dispatch(setIsPausing(true));
-      });
+  function scanWifi(idx: number, totalScan: number) {
+    if (idx === 1) {
+      console.log(`Index = ${idx}`);
+      callReScanWrapper(idx, totalScan);
+    } else if (idx <= totalScan) {
+      console.log('Pausing...');
+      setTimeout(() => {
+        console.log(`Done pausing. Continue at index = ${idx}`);
+        callReScanWrapper(idx, totalScan);
+      }, scanInterval);
     } else {
-      console.log('null wifimanager');
+      console.log('End');
+      dispatch(resetCurrentScanNumber());
+      dispatch(setIsScanning(false));
+      return;
     }
   }
+
+  // function getWifiData() {
+  //   if (WifiManager) {
+  //     WifiManager.reScanAndLoadWifiList().then(lists => {
+  //       const listsSorted = lists.sort((a, b) => (a.level > b.level ? -1 : 1));
+  //       dispatch(appendData(listsSorted));
+  //       // console.log('Finish scan at', currentScanNumber);
+  //       // dispatch(setIsPausing(true));
+  //     });
+  //   } else {
+  //     console.log('null wifimanager');
+  //   }
+  // }
 
   return {handleReadWifi};
 }

@@ -10,7 +10,7 @@ const schema = yup.object({
     .number()
     .integer()
     .positive()
-    .min(10000)
+    .min(100)
     .max(1000000)
     .required(),
 });
