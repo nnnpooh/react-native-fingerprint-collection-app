@@ -5,6 +5,7 @@ export interface WorkingState {
   deviceInfo: deviceInfoType;
   hasAccessFineLocation: boolean;
   email: string;
+  readFingerprint: boolean;
 }
 
 const blankDeviceInfo = {
@@ -19,6 +20,7 @@ const initialState: WorkingState = {
   deviceInfo: blankDeviceInfo,
   hasAccessFineLocation: false,
   email: '',
+  readFingerprint: false,
 };
 
 export const workingSlice = createSlice({
@@ -34,10 +36,17 @@ export const workingSlice = createSlice({
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
+    setReadFingerprint: (state, action: PayloadAction<boolean>) => {
+      state.readFingerprint = action.payload;
+    },
   },
 });
 
-export const {setDeviceInfo, setHasAccessFineLocation, setEmail} =
-  workingSlice.actions;
+export const {
+  setDeviceInfo,
+  setHasAccessFineLocation,
+  setEmail,
+  setReadFingerprint,
+} = workingSlice.actions;
 
 export default workingSlice.reducer;

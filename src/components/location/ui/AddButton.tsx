@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Center, Text, IconButton} from 'native-base';
+import {IconButton} from 'native-base';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 interface Props {

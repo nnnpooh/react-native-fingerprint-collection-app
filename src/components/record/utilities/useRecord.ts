@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {useMutation} from 'react-query';
-import {useAppSelector} from 'src/store/hook';
+import {useAppSelector, useAppDispatch} from 'src/store/hook';
 import {db} from 'src/utilities/firebase/firebase';
 import {SiteType, PointType} from 'src/components/location/types/location';
+import {setReadFingerprint} from 'src/store/workingSlice';
 
 function useRecord() {
   const {
@@ -12,17 +13,19 @@ function useRecord() {
     currentScanNumber,
   } = useAppSelector(state => state.wifi);
 
-  const [pressRead, setPressRead] = useState(false);
+  const {readFingerprint: pressRead} = useAppSelector(state => state.working);
+  const dispatch = useAppDispatch();
+
   const [showSucessAlert, setShowSuccessAlert] = useState(false);
   const {currentSite, currentPoint} = useAppSelector(state => state.location);
 
   function handlePressRead() {
-    setPressRead(true);
+    dispatch(setReadFingerprint(true));
     setShowSuccessAlert(false);
   }
 
   async function writeData() {
-    setPressRead(false);
+    dispatch(setReadFingerprint(false));
     const now = new Date();
     const docId = getDocumentName(currentSite, currentPoint, now);
     const dbPath = `${currentSite.key}/${currentPoint.key}/readings/${docId}`;

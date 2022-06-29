@@ -10,7 +10,6 @@ import {
 import SelectLocation from './ui/SelectLocation';
 import useRecord from './utilities/useRecord';
 import RecordAlert from 'src/components/record/ui/RecordAlert';
-
 const RecordScreen: FC = () => {
   const {sites, currentSite, points, currentPoint} = useAppSelector(
     state => state.location,
@@ -70,8 +69,8 @@ const RecordScreen: FC = () => {
       <HStack space={2}>
         <Button
           onPress={() => {
-            handleReadWifi();
             handlePressRead();
+            handleReadWifi();
           }}
           flexGrow={3}
           isLoading={isScanning}
@@ -92,7 +91,7 @@ const RecordScreen: FC = () => {
           Scanning {currentScanNumber} / {totalScan} ({scanInterval} ms)
         </Text>
 
-        <HStack alignItems={'center'} space={2}>
+        <VStack alignItems={'flex-end'} space={2}>
           <Text>
             Displaying {currentDataIndex + 1} / {data.length}
           </Text>
@@ -116,11 +115,12 @@ const RecordScreen: FC = () => {
               {'>'}
             </Button>
           </Button.Group>
-        </HStack>
+        </VStack>
       </HStack>
 
       <FlatList
         data={data[currentDataIndex]}
+        _contentContainerStyle={{paddingBottom: 600}}
         renderItem={data => (
           <HStack
             borderWidth={1}
