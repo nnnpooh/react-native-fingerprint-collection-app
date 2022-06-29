@@ -10,6 +10,8 @@ import {
 import SelectLocation from './ui/SelectLocation';
 import useRecord from './utilities/useRecord';
 import RecordAlert from 'src/components/record/ui/RecordAlert';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 const RecordScreen: FC = () => {
   const {sites, currentSite, points, currentPoint} = useAppSelector(
     state => state.location,
@@ -28,6 +30,7 @@ const RecordScreen: FC = () => {
     totalScan,
     currentScanNumber,
     currentDataIndex,
+    isPausing,
   } = useAppSelector(state => state.wifi);
   const dispatch = useAppDispatch();
 
@@ -87,9 +90,18 @@ const RecordScreen: FC = () => {
       </HStack>
 
       <HStack alignItems={'center'} justifyContent="space-between">
-        <Text>
-          Scanning {currentScanNumber} / {totalScan} ({scanInterval} ms)
-        </Text>
+        <VStack alignItems={'flex-start'} space={2}>
+          {!isScanning ? (
+            <></>
+          ) : isPausing ? (
+            <Icon name="pausecircle" size={20} color="gray" />
+          ) : (
+            <Icon name="play" size={20} color="green" />
+          )}
+          <Text>
+            Scanning {currentScanNumber} / {totalScan} ({scanInterval} ms)
+          </Text>
+        </VStack>
 
         <VStack alignItems={'flex-end'} space={2}>
           <Text>

@@ -73,7 +73,6 @@ export const wifiSlice = createSlice({
     },
     setIsPausing: (state, action: PayloadAction<boolean>) => {
       state.isPausing = action.payload;
-      console.log('Set pasing to', state.isPausing ? 'True' : 'false');
     },
   },
 });

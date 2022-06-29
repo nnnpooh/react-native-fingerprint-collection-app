@@ -63,8 +63,10 @@ export default function useWifi() {
       callReScanWrapper(idx, totalScan);
     } else if (idx <= totalScan) {
       console.log('Pausing...');
+      dispatch(setIsPausing(true));
       setTimeout(() => {
         console.log(`Done pausing. Continue at index = ${idx}`);
+        dispatch(setIsPausing(false));
         callReScanWrapper(idx, totalScan);
       }, scanInterval);
     } else {
