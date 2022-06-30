@@ -1,6 +1,6 @@
 import {useMutation} from 'react-query';
 import {useAppSelector, useAppDispatch} from 'src/store/hook';
-import {db} from 'src/utilities/firebase/firebase';
+import {db, FieldValue} from 'src/utilities/firebase/firebase';
 import {SiteType, PointType} from 'src/components/location/types/location';
 import {
   setReadFingerprint,
@@ -14,7 +14,11 @@ function useRecord() {
     totalScan,
   } = useAppSelector(state => state.wifi);
 
-  const {readFingerprint: pressRead} = useAppSelector(state => state.working);
+  const {
+    readFingerprint: pressRead,
+    deviceInfo,
+    email,
+  } = useAppSelector(state => state.working);
   const dispatch = useAppDispatch();
 
   const {currentSite, currentPoint} = useAppSelector(state => state.location);
@@ -47,10 +51,16 @@ function useRecord() {
       docId,
       time: now,
       timestamp: now.getTime(),
+      deviceInfo,
+      email,
     };
 
     try {
       await db.doc(dbPath).set(dataAdded);
+      await db.doc(currentPoint.dbPath).update({
+        totalScans: FieldValue.increment(1),
+        totalFingerprints: FieldValue.increment(totalScan),
+      });
       return dataAdded;
     } catch (err) {
       console.log(err);

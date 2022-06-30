@@ -26,6 +26,8 @@ const blankPoint = {
   siteDbPath: '',
   siteKey: '',
   siteText: '',
+  totalScans: 0,
+  totalFingerprints: 0,
 };
 
 const initialState: LocationState = {

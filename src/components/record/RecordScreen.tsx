@@ -12,7 +12,7 @@ const RecordScreen: FC = () => {
   const {currentSite, currentPoint} = useAppSelector(state => state.location);
 
   return (
-    <VStack space={4} m={6}>
+    <VStack space={2} mx={6} my={4}>
       <SelectLocationSection />
 
       <RecordAlert

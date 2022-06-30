@@ -14,6 +14,8 @@ export interface PointType extends SiteType {
   siteDbPath: string;
   siteKey: string;
   siteText: string;
+  totalScans: number;
+  totalFingerprints: number;
 }
 
 export interface LocationFormDataType {

@@ -51,20 +51,33 @@ const PointTab: FC = () => {
                   data.item.key === currentPoint.key ? 'gray.200' : 'gray.100'
                 }
                 justifyContent="space-between">
-                <HStack alignContent="center" space={4}>
+                <HStack alignItems="center" space={4}>
                   <Box bg="gray.400" px={2} borderRadius="full">
                     <Text color="white">{data.index + 1}</Text>
                   </Box>
-                  <Text>
-                    {data.item.text} ({data.item.key})
-                  </Text>
+
+                  <VStack>
+                    <Text bold>{data.item.text}</Text>
+
+                    <Text fontSize="xs" color="gray.400">
+                      {data.item.key}
+                    </Text>
+                  </VStack>
                 </HStack>
-                <EditButton
-                  onPress={() => {
-                    dispatch(setCurrentPoint(data.item.key));
-                    handlePress('EDIT_POINT');
-                  }}
-                />
+
+                <HStack alignItems={'center'} space={3}>
+                  <Box bg="gray.400" px={3} py={1} borderRadius="sm">
+                    <Text color="white">
+                      {`${data.item.totalFingerprints} (${data.item.totalScans})`}
+                    </Text>
+                  </Box>
+                  <EditButton
+                    onPress={() => {
+                      dispatch(setCurrentPoint(data.item.key));
+                      handlePress('EDIT_POINT');
+                    }}
+                  />
+                </HStack>
               </HStack>
             </Pressable>
           )}

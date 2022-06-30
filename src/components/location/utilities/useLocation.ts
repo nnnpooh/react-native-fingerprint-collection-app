@@ -115,6 +115,8 @@ const getFormattedData: GetFormatFunctionType = ({
         siteDbPath: currentSite.dbPath,
         siteKey: currentSite.key,
         siteText: currentSite.text,
+        totalScans: 0,
+        totalFingerprints: 0,
       };
       break;
     case 'EDIT_POINT':

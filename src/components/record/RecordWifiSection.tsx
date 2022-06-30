@@ -7,20 +7,14 @@ import {
   decrementCurrentDataIndex,
 } from 'src/store/wifiSlice';
 import useRecord from './utilities/useRecord';
-import Icon from 'react-native-vector-icons/AntDesign';
 import ScanningInfo from 'src/components/record/ui/ScanningInfo';
-
+import DisplayDataInfo from './ui/DisplayDataInfo';
 const RecordWifiSection: FC = () => {
   const {handleReadWifi} = useWifi();
-  const {
-    data,
-    isScanning,
-    scanInterval,
-    totalScan,
-    currentScanNumber,
-    currentDataIndex,
-    isPausing,
-  } = useAppSelector(state => state.wifi);
+  const {data, isScanning, currentDataIndex} = useAppSelector(
+    state => state.wifi,
+  );
+  const {currentPoint} = useAppSelector(state => state.location);
   const dispatch = useAppDispatch();
   const {mutate, pressRead, handlePressRead} = useRecord();
   const disableAddButton = isScanning || !pressRead;
@@ -49,35 +43,7 @@ const RecordWifiSection: FC = () => {
 
       <HStack alignItems={'center'} justifyContent="space-between">
         <ScanningInfo />
-
-        <VStack alignItems={'flex-end'} space={2}>
-          <Text>
-            Displaying{' '}
-            {data.length === 0
-              ? '(None)'
-              : `${currentDataIndex + 1} / ${data.length}`}
-          </Text>
-          <Button.Group isAttached>
-            <Button
-              size="xs"
-              bg="primary.500"
-              onPress={() => {
-                dispatch(decrementCurrentDataIndex());
-              }}
-              isDisabled={currentDataIndex <= 0}>
-              {'<'}
-            </Button>
-            <Button
-              size="xs"
-              bg="primary.500"
-              onPress={() => {
-                dispatch(incrementCurrentDataIndex());
-              }}
-              isDisabled={currentDataIndex >= data.length - 1}>
-              {'>'}
-            </Button>
-          </Button.Group>
-        </VStack>
+        <DisplayDataInfo />
       </HStack>
 
       <FlatList

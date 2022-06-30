@@ -17,7 +17,7 @@ const SelectLocationSection: FC = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <VStack space={4}>
+    <VStack space={4} p={4} bg="gray.200" borderRadius={'lg'}>
       <HStack alignItems={'center'} space={8}>
         <Box>
           <Text bold>Site</Text>
@@ -39,6 +39,17 @@ const SelectLocationSection: FC = () => {
           options={pointOptions}
           placeholder="Choose Point"
         />
+      </HStack>
+
+      <HStack alignItems={'center'} space={2} justifyContent={'flex-end'}>
+        <Box bg="gray.400" px={3} borderRadius="md">
+          <Text color="white">{`Scans: ${currentPoint.totalScans}`}</Text>
+        </Box>
+        <Box bg="gray.400" px={3} borderRadius="md">
+          <Text color="white">
+            {`Fingerprints: ${currentPoint.totalFingerprints}`}
+          </Text>
+        </Box>
       </HStack>
     </VStack>
   );
