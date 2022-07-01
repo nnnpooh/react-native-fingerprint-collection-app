@@ -13,6 +13,10 @@ const SiteTab: FC = () => {
   return (
     <>
       <VStack space={4} m={6}>
+        <HStack space={4} alignItems="center" justifyContent={'flex-end'}>
+          <Text>Add Site</Text>
+          <AddButton onPress={() => handlePress('ADD_SITE')} />
+        </HStack>
         <FlatList
           data={sites}
           renderItem={data => (
@@ -46,10 +50,6 @@ const SiteTab: FC = () => {
             </Pressable>
           )}
         />
-        <HStack space={4} alignItems="center" justifyContent={'flex-end'}>
-          <Text>Add Site</Text>
-          <AddButton onPress={() => handlePress('ADD_SITE')} />
-        </HStack>
       </VStack>
 
       <LocationModal

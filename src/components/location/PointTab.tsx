@@ -33,7 +33,13 @@ const PointTab: FC = () => {
           </Text>
         </Box>
 
+        <HStack space={4} alignItems="center" justifyContent="flex-end">
+          <Text>Add Point</Text>
+          <AddButton onPress={() => handlePress('ADD_POINT')} />
+        </HStack>
+
         <FlatList
+          _contentContainerStyle={{paddingBottom: 300}}
           data={points}
           renderItem={data => (
             <Pressable
@@ -82,10 +88,6 @@ const PointTab: FC = () => {
             </Pressable>
           )}
         />
-        <HStack space={4} alignItems="center" justifyContent="flex-end">
-          <Text>Add Point</Text>
-          <AddButton onPress={() => handlePress('ADD_POINT')} />
-        </HStack>
       </VStack>
       <LocationModal
         modalType={modalType}
